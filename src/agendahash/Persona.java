@@ -9,7 +9,8 @@ import java.io.Serializable;
 
 /**
  *
- * @author root-admin
+ * @author Sergio Granero García
+ * @version V1.
  */
 public class Persona implements Serializable {
 
@@ -56,6 +57,9 @@ public class Persona implements Serializable {
         this.telefono = telefono;
     }
 
+    /**Método que imprime los atributos de un objeto persona.
+     * 
+     */
     public void print() {
 
         System.out.println("\n- DNI: " + this.getDni()

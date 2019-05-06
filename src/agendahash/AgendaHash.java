@@ -22,7 +22,7 @@ import java.util.Enumeration;
  * Agenda de contactos. Serialización/Hastables.
  *
  * @author Sergio Granero García
- * @version V2
+ * @version V2.3
  */
 public class AgendaHash {
 
@@ -167,9 +167,10 @@ public class AgendaHash {
     }
 
     /**
-     * Método que
+     * Método que pide al usuario si desea continuar con la acción, en este
+     * caso, borrar un contacto.
      *
-     * @return
+     * @return String respuesta negativa o positiva.
      */
     public static String pideRespuesta() {
 
@@ -188,13 +189,18 @@ public class AgendaHash {
         return resp.toLowerCase();
     }
 
+    /**
+     * Método que carga el fichero agenda.dat, serilializando el
+     * objeto agenda.
+     *
+     */
     private static void cargarAgendaHash() {
 
         File agenda = null;
         FileInputStream flujo_entrada = null;
         ObjectInputStream ois = null;
 
-         aq = new Agenda();
+        aq = new Agenda();
 
         try {
 
@@ -206,7 +212,7 @@ public class AgendaHash {
                 ois = new ObjectInputStream(flujo_entrada);
 
                 aq = (Agenda) ois.readObject();
-                
+
                 /*while (true) {
 
                     Persona p = null;
@@ -215,7 +221,6 @@ public class AgendaHash {
                     aq.agregar(p.getDni(), p.getNombre(), p.getTelefono());
 
                 }*/
-
             }
 
         } catch (EOFException eof) {
@@ -239,6 +244,10 @@ public class AgendaHash {
         }
     }
 
+    /**
+     * Método que serializa el objeto agenda y lo guarda en un fichero.
+     *
+     */
     public static void guardarAgendaHash() {
 
         File agenda;
@@ -252,7 +261,7 @@ public class AgendaHash {
             oos = new ObjectOutputStream(fos);
 
             oos.writeObject(aq);
-            
+
             //String clave;
             //Persona per;
 
@@ -265,7 +274,6 @@ public class AgendaHash {
                 oos.writeObject(per);
 
             }*/
-            
             if (oos != null) {
                 oos.close();
                 fos.close();
@@ -279,6 +287,11 @@ public class AgendaHash {
 
     }
 
+    /**
+     * Imprime el menú del ejercicio agenda.
+     *
+     * @return int número de la opción seleccionada.
+     */
     public static int menuAgenda() {
 
         System.out.println("\n+---------------------------------------+"
@@ -298,15 +311,18 @@ public class AgendaHash {
 
     }
 
+    /**
+     * Método que añade un contacto a la agenda, preguntando en el mismo el DNI,
+     * el nombre y el telefono a guardar.
+     *
+     */
     public static void agregarAgenda() {
 
         dni = pideDni();
         nombre = pideNombre();
         telefono = pideTelefono();
 
-        boolean bol = aq.agregar(dni, nombre, telefono);
-        
-        if (bol) {
+        if (aq.agregar(dni, nombre, telefono)) {
             System.out.println("\n\nContacto añadido.");
         } else {
             System.err.println("Esa persona ya está registrada.");
@@ -314,6 +330,9 @@ public class AgendaHash {
 
     }
 
+    /**Realiza una búsqueda dependiendo del dni introducido por teclado.
+     * 
+     */
     public static void buscarAgenda() {
 
         dni = pideDni();
@@ -332,6 +351,10 @@ public class AgendaHash {
 
     }
 
+    /**Elimina un contacto de la agenda introduciendo su DNI. A su vez pregunta
+     * si el usuario está seguro de su decisión.
+     * 
+     */
     public static void eliminarAgenda() {
 
         dni = pideDni();
@@ -367,6 +390,10 @@ public class AgendaHash {
 
     }
 
+    /**Modifica un contacto de la agenda. Se introduce el dni del contacto que
+     * se desea modificar.
+     * 
+     */
     public static void modificarAgenda() {
 
         dni = pideDni();
@@ -402,6 +429,10 @@ public class AgendaHash {
 
     }
 
+    /**Método que lista por pantalla por orden de DNI todos los contactos de la 
+     * agenda.
+     * 
+     */
     public static void listarAgenda() {
 
         String clave;
@@ -439,61 +470,64 @@ public class AgendaHash {
      */
     public static void main(String[] args) {
 
-            cargarAgendaHash();
+        //Carga.
+        cargarAgendaHash();
 
-            //ATRIBUTOS.
-            int opcion;
+        //ATRIBUTOS.
+        int opcion;
 
-            opcion = menuAgenda();
+        //Menú.
+        opcion = menuAgenda();
 
-            while (opcion != 6) {
+        while (opcion != 6) {
 
-                switch (opcion) {
-                    case 1:
+            switch (opcion) {
+                case 1:
 
-                        SLeer2.limpiar();
-                        agregarAgenda();
-                        break;
+                    SLeer2.limpiar();
+                    agregarAgenda();
+                    break;
 
-                    case 2:
+                case 2:
 
-                        SLeer2.limpiar();
-                        buscarAgenda();
-                        break;
+                    SLeer2.limpiar();
+                    buscarAgenda();
+                    break;
 
-                    case 3:
+                case 3:
 
-                        SLeer2.limpiar();
-                        eliminarAgenda();
-                        break;
+                    SLeer2.limpiar();
+                    eliminarAgenda();
+                    break;
 
-                    case 4:
+                case 4:
 
-                        SLeer2.limpiar();
-                        modificarAgenda();
-                        break;
+                    SLeer2.limpiar();
+                    modificarAgenda();
+                    break;
 
-                    case 5:
+                case 5:
 
-                        SLeer2.limpiar();
-                        System.out.println("");
-                        listarAgenda();
-                        break;
+                    SLeer2.limpiar();
+                    System.out.println("");
+                    listarAgenda();
+                    break;
 
-                    case 6:
+                case 6:
 
-                        SLeer2.limpiar();
-                        break;
+                    SLeer2.limpiar();
+                    break;
 
-                    default:
-                        throw new AssertionError();
-                }
-
-                espacios();
-                opcion = menuAgenda();
-
+                default:
+                    throw new AssertionError();
             }
 
+            espacios();
+            opcion = menuAgenda();
+
+        }
+
+        //Guardado.
         guardarAgendaHash();
 
         System.out.println("\n\n[Agenda guardada. Fin del programa]\n");
