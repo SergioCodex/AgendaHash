@@ -19,8 +19,10 @@ import java.util.Collections;
 import java.util.Enumeration;
 
 /**
+ * Agenda de contactos. Serialización/Hastables.
  *
- * @author root-admin
+ * @author Sergio Granero García
+ * @version V2
  */
 public class AgendaHash {
 
@@ -30,6 +32,10 @@ public class AgendaHash {
     private static long telefono;
     private static Agenda aq;
 
+    /**
+     * Método que da 15 saltos de líneas.
+     *
+     */
     public static void espacios() {
 
         SLeer2.datoString("Enter para continuar...");
@@ -42,6 +48,12 @@ public class AgendaHash {
 
     }
 
+    /**
+     * Método que pide por pantalla un número, asegurándose que esté entre 1 y
+     * 6.
+     *
+     * @return int número introducido por teclado.
+     */
     public static int pideNumero() {
 
         int num;
@@ -62,6 +74,12 @@ public class AgendaHash {
 
     }
 
+    /**
+     * Método que pide un nombre por pantalla, se asegura de que se haya
+     * introducido algún valor.
+     *
+     * @return String nombre introducido por teclado.
+     */
     public static String pideNombre() {
 
         String nom;
@@ -81,8 +99,16 @@ public class AgendaHash {
         return nom;
     }
 
+    /**
+     * Método que pide un DNI por pantalla, realiza una serie de comprobaciones
+     * para averiguar si el DNI es correcto, es decir, que contenga 8 dígitos y
+     * una letra.
+     *
+     * @return String dni que se introduce por pantalla.
+     */
     public static String pideDni() {
 
+        //Atributo.
         String dni;
         boolean long_correcta = false;
         boolean letra_correcta = false;
@@ -140,6 +166,11 @@ public class AgendaHash {
 
     }
 
+    /**
+     * Método que
+     *
+     * @return
+     */
     public static String pideRespuesta() {
 
         String resp;
@@ -163,7 +194,7 @@ public class AgendaHash {
         FileInputStream flujo_entrada = null;
         ObjectInputStream ois = null;
 
-        aq = new Agenda();
+         aq = new Agenda();
 
         try {
 
@@ -174,14 +205,16 @@ public class AgendaHash {
                 flujo_entrada = new FileInputStream(agenda);
                 ois = new ObjectInputStream(flujo_entrada);
 
-                while (true) {
+                aq = (Agenda) ois.readObject();
+                
+                /*while (true) {
 
                     Persona p = null;
                     p = (Persona) ois.readObject();
 
                     aq.agregar(p.getDni(), p.getNombre(), p.getTelefono());
 
-                }
+                }*/
 
             }
 
@@ -218,10 +251,12 @@ public class AgendaHash {
             fos = new FileOutputStream(agenda);
             oos = new ObjectOutputStream(fos);
 
-            String clave;
-            Persona per;
+            oos.writeObject(aq);
+            
+            //String clave;
+            //Persona per;
 
-            Enumeration<String> lista = aq.total();
+            /*Enumeration<String> lista = aq.total();
 
             while (lista.hasMoreElements()) {
 
@@ -229,8 +264,8 @@ public class AgendaHash {
                 per = (Persona) aq.recuperar(clave);
                 oos.writeObject(per);
 
-            }
-
+            }*/
+            
             if (oos != null) {
                 oos.close();
                 fos.close();
@@ -269,10 +304,12 @@ public class AgendaHash {
         nombre = pideNombre();
         telefono = pideTelefono();
 
-        if (!aq.agregar(dni, nombre, telefono)) {
-            System.err.println("Esa persona ya está registrada.");
-        } else {
+        boolean bol = aq.agregar(dni, nombre, telefono);
+        
+        if (bol) {
             System.out.println("\n\nContacto añadido.");
+        } else {
+            System.err.println("Esa persona ya está registrada.");
         }
 
     }
@@ -371,6 +408,8 @@ public class AgendaHash {
         Persona per;
         int cont = 1;
 
+        //ArrayList<String> list = Collection.list(aq.total());
+        //Collection.sort(list);
         Enumeration<String> lista = aq.total();
         ArrayList<String> dnies = new ArrayList<String>();
 
@@ -399,16 +438,6 @@ public class AgendaHash {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-        FileOutputStream fos = null;
-
-        try {
-
-            File agen = new File("Agenda.dat");
-
-            if (!agen.exists()) {
-                fos = new FileOutputStream(agen);
-            }
 
             cargarAgendaHash();
 
@@ -464,20 +493,6 @@ public class AgendaHash {
                 opcion = menuAgenda();
 
             }
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("No existe el fichero.");
-        } finally {
-            try {
-
-                if (fos != null) {
-                    fos.close();
-                }
-
-            } catch (IOException ex) {
-                System.out.println("IOException.");
-            }
-        }
 
         guardarAgendaHash();
 

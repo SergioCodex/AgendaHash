@@ -26,17 +26,17 @@ public class Agenda implements Serializable{
 
     public boolean agregar(String dni, String nombre, long telefono) {
 
-        if (!tb.containsKey(dni)) {
-
+        if (tb.containsKey(dni)) {
+            
+            return false;
+            
+        } else {
+            
             Persona p1 = new Persona(dni, nombre, telefono);
 
             tb.put(dni, p1);
 
             return true;
-
-        } else {
-
-            return false;
 
         }
 
