@@ -199,7 +199,7 @@ public class AgendaHash {
         File agenda = null;
         FileInputStream flujo_entrada = null;
         ObjectInputStream ois = null;
-
+        
         aq = new Agenda();
 
         try {
@@ -212,7 +212,7 @@ public class AgendaHash {
                 ois = new ObjectInputStream(flujo_entrada);
 
                 aq = (Agenda) ois.readObject();
-
+                
                 /*while (true) {
 
                     Persona p = null;
@@ -221,7 +221,7 @@ public class AgendaHash {
                     aq.agregar(p.getDni(), p.getNombre(), p.getTelefono());
 
                 }*/
-            }
+            } 
 
         } catch (EOFException eof) {
             System.out.println("\n");
